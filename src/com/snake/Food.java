@@ -13,10 +13,18 @@ public class Food extends Point {
     Food() {
         super(-1,-1);
         super.color = FOOD_COLOR;
+        createFood();
     }
 
     void createFood() {
-        super.x = rnd.nextInt(20);
-        super.y = rnd.nextInt(30);
+        super.x = rnd.nextInt(29);
+        super.y = rnd.nextInt(19);
+    }
+
+    boolean isEaten(int x, int y) {
+        if ((this.x == x) && (this.y==y))
+                return true;
+        else
+            return false;
     }
 }

@@ -34,7 +34,10 @@ public class Snake {
         if (direction == RIGHT) x++;
         if (direction == UP) y--;
         if (direction == DOWN) y++;
-        if (x > GUI.FIELD_WIDTH) x = 0;
+        if (x > GUI.FIELD_WIDTH -1) x = 0;
+        if (x < 0) x = GUI.FIELD_WIDTH -1;
+        if (y > GUI.FIELD_HEIGHT -1) y = 0;
+        if (y < 0) y = GUI.FIELD_HEIGHT -1;
         snake.add(0,new Point(x,y));
         snake.remove(snake.size() -1);
     }
@@ -43,5 +46,18 @@ public class Snake {
         if (direction >= LEFT && direction <= DOWN)
             if (Math.abs(this.direction - direction) != 2)
                 this.direction = direction;
+    }
+
+    boolean isEatenYourself(int x, int y) {
+        boolean gameOver = false;
+
+        for (Point point : snake)
+            if ((point.x == x) && (point.y == y) && (snake.indexOf(point)!=0)) {
+                gameOver = true;
+                break;
+            }
+
+        return gameOver;
+
     }
 }

@@ -13,15 +13,17 @@ public class GUI {
     private JFrame frame;
     private JPanel panel;
     private final String FRAME_TITLE = "Classic Game Snake";
-    public static final int FIELD_WIDTH = 50;
-    public static final int FIELD_HEIGHT = 40;
-    private final int DX = 15;
-    private final int DY = 20;
+    public static final int FIELD_WIDTH = 30;
+    public static final int FIELD_HEIGHT = 20;
+    public static final int DX = 15;
+    public static final int DY = 20;
     private final int START_SNAKE_X = 10;
     private final int START_SNAKE_Y = 10;
     private final int START_DIRECTION = 39;
     private final int SNAKE_LENGTH = 450;
+    private String GAME_OVER_MSG = "GAME OVER!!!";
     //private final int FIELD_HEIGHT = 450;
+    boolean gameOver = false;
     private Canvas canvas;
     Snake snake;
     Food food;
@@ -44,15 +46,30 @@ public class GUI {
                 snake.setDirection(e.getKeyCode());
             }
         });
-        while(true)
+
+
+        do
         {
 
+            //boolean gameOver = false;
             snake.move();
+
+            gameOver = snake.isEatenYourself(snake.snake.get(0).getX(), snake.snake.get(0).getY());
+
+            if(food.isEaten(snake.snake.get(0).getX(), snake.snake.get(0).getY())) {
+                snake.snake.add(0,new Point(food.getX(),food.getY()));
+                food.createFood();
+            }
+            /*if (snake.isEatenYourself(snake.snake.get(0).getX(), snake.snake.get(0).getY()))
+                System.out.println("true");*/
+
+
             canvas.repaint();
+
             try {
                 Thread.sleep(150);
             } catch (InterruptedException e) { e.printStackTrace(); }
-            }
+            } while (gameOver == false);
 
     }
 
@@ -61,11 +78,13 @@ public class GUI {
             super.paint(g);
             snake.paint(g);
             food.paint(g);
+            if (gameOver)
+            {
+                g.setColor(Color.red);
+                g.setFont(new Font("Arial", Font.BOLD, 40));
+                FontMetrics fm = g.getFontMetrics();
+                g.drawString(GAME_OVER_MSG, (FIELD_WIDTH * Point.POINT_RADIUS + DX - fm.stringWidth(GAME_OVER_MSG))/2, (FIELD_HEIGHT * Point.POINT_RADIUS + DY)/2);
+            }
         }
-    }
-
-
-    public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyCode());
     }
 }

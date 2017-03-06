@@ -20,6 +20,7 @@ public class Point {
         g.setColor(color);
         g.fillOval(x*POINT_RADIUS,y*POINT_RADIUS,POINT_RADIUS,POINT_RADIUS);
     }
+
     public int getX() { return x; }
     public int getY() { return y; }
     public static int getPOINT_RADIUS() { return POINT_RADIUS; }
