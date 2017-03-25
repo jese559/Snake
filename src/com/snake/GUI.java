@@ -20,13 +20,12 @@ public class GUI {
     private final int START_SNAKE_X = 10;
     private final int START_SNAKE_Y = 10;
     private final int START_DIRECTION = 39;
-    private final int SNAKE_LENGTH = 450;
     private String GAME_OVER_MSG = "GAME OVER!!!";
-    //private final int FIELD_HEIGHT = 450;
     boolean gameOver = false;
-    private Canvas canvas;
+    Canvas canvas;
     Snake snake;
     Food food;
+    Poison poison;
 
     public void startGUI() {
         frame = new JFrame(FRAME_TITLE);
@@ -39,10 +38,10 @@ public class GUI {
 
         snake = new Snake(START_SNAKE_X, START_SNAKE_Y, 7, START_DIRECTION);
         food = new Food();
+        poison = new Poison();
         frame.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
-                //super.keyPressed(e);
                 snake.setDirection(e.getKeyCode());
             }
         });
@@ -52,6 +51,7 @@ public class GUI {
         {
 
             //boolean gameOver = false;
+            canvas.repaint();
             snake.move();
 
             gameOver = snake.isEatenYourself(snake.snake.get(0).getX(), snake.snake.get(0).getY());
@@ -60,11 +60,21 @@ public class GUI {
                 snake.snake.add(0,new Point(food.getX(),food.getY()));
                 food.createFood();
             }
+
+            if(poison.isEaten(snake.snake.get(0).getX(), snake.snake.get(0).getY())) {
+                for (int i=0;i<2;i++) {
+                    snake.snake.remove(snake.snake.size()-1);
+                    canvas.repaint();
+                    if (snake.snake.size() < 5)
+                        gameOver = true;
+                }
+                for (int i=0;i<2;i++) {
+                    poison.createPoison();
+                    canvas.repaint();
+                }
+            }
             /*if (snake.isEatenYourself(snake.snake.get(0).getX(), snake.snake.get(0).getY()))
                 System.out.println("true");*/
-
-
-            canvas.repaint();
 
             try {
                 Thread.sleep(150);
@@ -78,6 +88,7 @@ public class GUI {
             super.paint(g);
             snake.paint(g);
             food.paint(g);
+            poison.paint(g);
             if (gameOver)
             {
                 g.setColor(Color.red);

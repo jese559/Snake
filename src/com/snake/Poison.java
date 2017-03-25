@@ -1,29 +1,31 @@
 package com.snake;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Created by Anon on 04.03.2017.
+ * Created by n7701-00-134 on 07.03.2017.
  */
-public class Food extends Point {
-    final Color FOOD_COLOR = Color.green;
+
+public class Poison extends Point {
+    final Color DEFAULT_COLOR = Color.red;
     Random rnd = new Random();
 
-    Food() {
+    Poison() {
         super(-1,-1);
-        super.color = FOOD_COLOR;
-        createFood();
+        super.color = DEFAULT_COLOR;
+        createPoison();
     }
 
-    void createFood() {
+    void createPoison() {
         this.x = rnd.nextInt(29);
         this.y = rnd.nextInt(19);
     }
 
     boolean isEaten(int x, int y) {
         if ((this.x == x) && (this.y==y))
-                return true;
+            return true;
         else
             return false;
     }
